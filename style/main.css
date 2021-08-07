@@ -11,7 +11,59 @@ body {
     font-family: sans-serif;
 }
 
-.field {
+
+.primary-controler {
+    border-radius: 10px;
+    background-color: #ffc14f;
+    box-shadow: 3px 5px 1px #cd853f;
+    font-weight: 600;
+}
+.primary-button {
+    border: none;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+}
+.primary-button:hover {
+    box-shadow: 2px 3px 1px #cd853f;
+}
+.primary-label {
+    color: rgb(255, 255, 255);
+    padding: 0.8em 1.6em;
+}
+
+/* MENU BODY */
+.menu-body {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    /* display: none; */
+}
+.menu__title {
+    font-size: 2.5rem;
+    color: #ffffff;
+    font-weight: 900;
+}
+.menu__buttons {
+    margin-top: 50px;
+    display: grid;
+    grid-template-columns: 1fr;
+    row-gap: 30px;
+    width: 90%;
+}
+.menu__button {
+    width: 100%;
+    padding: 1em 0;
+}
+/* MENU BODY END */
+
+/* GAME BODY */
+.game-body {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    display: none;
+}
+.game__field {
     display: grid;
     width: 300px;
     height: 300px;
@@ -30,47 +82,29 @@ body {
 .cell.wrong {
     background-color: #e47357;
 }
-
-.game-controls {
+.game__controls {
     margin-top: 50px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     column-gap: 30px;
-    font-weight: 600;
 }
-.primary-controler {
-    border-radius: 10px;
-    background-color: #ffc14f;
-    box-shadow: 3px 5px 1px #cd853f;
-}
-.primary-button {
-    border: none;
-    color: rgb(255, 255, 255);
-    cursor: pointer;
-}
-.primary-button:hover {
-    box-shadow: 2px 3px 1px #cd853f;
-}
-.play {
+.game__play-btn {
     padding: 1em 2em;
 }
-.menu {
+.game__menu-btn {
     display: none;
     padding: 0.8em;
 }
-.restart {
+.game__restart-btn {
     display: none;
     padding: 0.8em;
 }
-.restart>img {
+.game__restart-btn>img {
     width: 24px;
     height: 24px;
 }
-.primary-label {
-    color: rgb(255, 255, 255);
-    padding: 0.8em 1.6em;
-}
-.level {
+.game__level {
     display: none;
 }
+/* GAME BODY END */

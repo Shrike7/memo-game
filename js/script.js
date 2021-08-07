@@ -2,14 +2,17 @@ const gameStartBtn = document.querySelector('#gameStart'),
     levelLabel = document.querySelector('#levelLabel'),
     menuBtn = document.querySelector('#menu'),
     gameRestartBtn = document.querySelector('#gameRestart'),
-    field = document.querySelector('#field');
-    cellGroup = new Array;
+    field = document.querySelector('#field'),
+    difficultyLevels = 'hard';
+
+let cellGroup = new Array;
 
 let levelPath = [],
     level = 1,
     levelMemoAmount = 2,
     levelMemoAmountSleep = 1, //while levelMemoAmountSleep < x levelMemoAmount doesn't increase
-    fieldSize = 3;
+    timeToMemo,
+    fieldSize;
 
 const gameControl = {
     gameStart() {
@@ -40,7 +43,7 @@ const gameControl = {
     
             //is all right
             if (levelPath.length == 0) {
-                cellGroup.forEach(cellElem => cellElem.removeEventListener('click', this.userPlay));
+                cellGroup.forEach(cellElem => cellElem.removeEventListener('click', gameControl.userPlay));
                 setTimeout(() => levelControl.nextLevel(), 1000);
             }
         } else {
@@ -67,7 +70,7 @@ const gameControl = {
         level = 1;
         levelMemoAmount = 2;
         levelMemoAmountSleep = 1;
-        fieldSize = 3;
+        globalControl.difficultyControl();
     
         //Reset field
         cellGroup.forEach(cellElem => {
@@ -138,7 +141,7 @@ const levelControl = {
             });
     
             cellGroup.forEach(cellElem => cellElem.addEventListener('click', gameControl.userPlay));
-        }, 4000);
+        }, timeToMemo);
     },
     nextLevel() {
         level++;
@@ -151,6 +154,29 @@ const levelControl = {
         this.generateLevelPath();
         this.startLevel();
     },
+}
+
+const globalControl = {
+    difficultyControl() {
+        switch (difficultyLevels) {
+            case 'easy':
+                fieldSize = 3;
+                timeToMemo = 4000;
+                break;
+            case 'normal':
+                fieldSize = 4;
+                timeToMemo = 3000;
+                break;
+            case 'hard':
+                fieldSize = 5;
+                timeToMemo = 2000;
+                break;
+            default:
+                fieldSize = 3;
+                timeToMemo = 4000;
+                break;
+        }
+    }
 }
 
 function createField (fieldSize) {
@@ -169,6 +195,7 @@ function createField (fieldSize) {
 
 
 function init () {
+    globalControl.difficultyControl();
     createField(fieldSize);
     gameStartBtn.addEventListener('click', gameControl.gameStart);
     gameRestartBtn.addEventListener('click', gameControl.gameRestart)

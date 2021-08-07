@@ -1,26 +1,43 @@
-const gameStartBtn = document.querySelector('#gameStart'),
+const menuBody = document.querySelector('#menuBody'),
+    mainMenu = document.querySelector('#mainMenu'),
+    backFromSettingsBtn = document.querySelector('#backFromSettings'),
+    gameStartBtn = document.querySelector('#gameStart'),
+    difficultySettingsBtn = document.querySelector('#difficultySettingsBtn'),
+    difficultySettings = document.querySelector('#difficultySettings'),
+    difficultySettingsBtnGroup = document.querySelector('#difficultySettingsBtnGroup'),
+    gameBody = document.querySelector('#gameBody'),
+    field = document.querySelector('#field'),
     levelLabel = document.querySelector('#levelLabel'),
-    menuBtn = document.querySelector('#menu'),
-    gameRestartBtn = document.querySelector('#gameRestart'),
-    field = document.querySelector('#field');
-    cellGroup = new Array;
+    backToMenuBtn = document.querySelector('#backToMenu'),
+    gameRestartBtn = document.querySelector('#gameRestart');
+    
+let cellGroup = new Array;
 
 let levelPath = [],
     level = 1,
     levelMemoAmount = 2,
     levelMemoAmountSleep = 1, //while levelMemoAmountSleep < x levelMemoAmount doesn't increase
-    fieldSize = 3;
+    timeToMemo,
+    fieldSize,
+    difficultyLevel;
+    
 
 const gameControl = {
-    gameStart() {
-        gameStartBtn.style.display = 'none';
-        levelLabel.style.display = 'block';
+    createField (fieldSize) {
+        const cellAmount = fieldSize * fieldSize;
+        field.innerHTML = '';
+        document.documentElement.style.setProperty('--fieldSize', fieldSize);
     
-        levelControl.generateLevelPath();
-        setTimeout(() => levelControl.startLevel(), 500);
+        for (let i = 0; i < cellAmount; i++) {
+            let cell = document.createElement('div');
+            field.appendChild(cell);
+            cell.classList.add('cell');
+            cell.setAttribute('data-position', i);
+        }
+        cellGroup = document.querySelectorAll('#field .cell');
     },
     gameRestart() {
-        menuBtn.style.display = 'none';
+        backToMenuBtn.style.display = 'none';
         gameRestartBtn.style.display = 'none';
     
         gameControl.gameReset();
@@ -40,7 +57,7 @@ const gameControl = {
     
             //is all right
             if (levelPath.length == 0) {
-                cellGroup.forEach(cellElem => cellElem.removeEventListener('click', this.userPlay));
+                cellGroup.forEach(cellElem => cellElem.removeEventListener('click', gameControl.userPlay));
                 setTimeout(() => levelControl.nextLevel(), 1000);
             }
         } else {
@@ -57,7 +74,7 @@ const gameControl = {
         });
     
         setTimeout(() => {
-            menuBtn.style.display = 'block';
+            backToMenuBtn.style.display = 'block';
             gameRestartBtn.style.display = 'block';
         }, 500);
     },
@@ -67,7 +84,7 @@ const gameControl = {
         level = 1;
         levelMemoAmount = 2;
         levelMemoAmountSleep = 1;
-        fieldSize = 3;
+        globalControl.difficultyControl();
     
         //Reset field
         cellGroup.forEach(cellElem => {
@@ -78,15 +95,16 @@ const gameControl = {
         //Reset label
         levelLabel.textContent = level + ' level';
     
-        createField(fieldSize);
+        gameControl.createField(fieldSize);
     },
     backToMenu() {
         gameControl.gameReset();
     
-        menuBtn.style.display = 'none';
+        backToMenuBtn.style.display = 'none';
         gameRestartBtn.style.display = 'none';
-        levelLabel.style.display = 'none';
-        gameStartBtn.style.display = 'block';
+
+        gameBody.style.display = 'none';
+        menuBody.style.display = 'flex'; //display 'flex' !important
     },
 }
 
@@ -118,7 +136,7 @@ const levelControl = {
                 levelPath = [];
                 levelMemoAmount = 2;
     
-                createField(++fieldSize);
+                gameControl.createField(++fieldSize);
                 this.generateLevelPath();
             } else {
                 levelMemoAmount--;
@@ -138,7 +156,7 @@ const levelControl = {
             });
     
             cellGroup.forEach(cellElem => cellElem.addEventListener('click', gameControl.userPlay));
-        }, 4000);
+        }, timeToMemo);
     },
     nextLevel() {
         level++;
@@ -153,26 +171,79 @@ const levelControl = {
     },
 }
 
-function createField (fieldSize) {
-    const cellAmount = fieldSize * fieldSize;
-    field.innerHTML = '';
-    document.documentElement.style.setProperty('--fieldSize', fieldSize);
+const menuControl = {
+    gameStart() {
+        menuBody.style.display = 'none';
+        gameBody.style.display = 'flex'; // display 'flex' !important
 
-    for (let i = 0; i < cellAmount; i++) {
-        let cell = document.createElement('div');
-        field.appendChild(cell);
-        cell.classList.add('cell');
-        cell.setAttribute('data-position', i);
+        globalControl.difficultyControl();
+        gameControl.createField(fieldSize);
+        levelControl.generateLevelPath();
+        setTimeout(() => levelControl.startLevel(), 500);
+    },
+    backFromSettings() {
+        difficultySettings.style.display = 'none';
+        mainMenu.style.display = 'block';
+    },
+    difficultySettings() {
+        mainMenu.style.display = 'none';
+        difficultySettings.style.display = 'block';
+    },
+    setDifficulty(e) {
+        let elem = e.target;
+        let elemDifficultyLevel = elem.dataset['difficult'];
+        
+        if(!elemDifficultyLevel)  return;
+        let previousDifficultyElem = difficultySettingsBtnGroup.querySelector('.active');
+
+        difficultyLevel = elemDifficultyLevel;
+        localStorage.setItem('difficultyLevel', difficultyLevel);
+
+        previousDifficultyElem.classList.remove('active');
+        elem.classList.add('active');
+    },
+}
+
+const globalControl = {
+    checkDifficulty() {
+        difficultyLevel = localStorage.getItem('difficultyLevel');
+
+        if (!difficultyLevel) difficultyLevel = 'easy';
+        let elemDifficultyLevel = difficultySettingsBtnGroup.querySelector(`[data-difficult="${difficultyLevel}"]`);
+        
+        elemDifficultyLevel.classList.add('active');
+    },
+    difficultyControl() {
+        switch (difficultyLevel) {
+            case 'easy':
+                fieldSize = 3;
+                timeToMemo = 4000;
+                break;
+            case 'normal':
+                fieldSize = 4;
+                timeToMemo = 3000;
+                break;
+            case 'hard':
+                fieldSize = 5;
+                timeToMemo = 2000;
+                break;
+            default:
+                fieldSize = 3;
+                timeToMemo = 4000;
+                break;
+        }
     }
-    cellGroup = document.querySelectorAll('#field .cell');
 }
 
 
 function init () {
-    createField(fieldSize);
-    gameStartBtn.addEventListener('click', gameControl.gameStart);
+    globalControl.checkDifficulty();
+    gameStartBtn.addEventListener('click', menuControl.gameStart);
     gameRestartBtn.addEventListener('click', gameControl.gameRestart)
-    menuBtn.addEventListener('click', gameControl.backToMenu);
+    backToMenuBtn.addEventListener('click', gameControl.backToMenu);
+    backFromSettingsBtn.addEventListener('click', menuControl.backFromSettings);
+    difficultySettingsBtn.addEventListener('click', menuControl.difficultySettings)
+    difficultySettingsBtnGroup.addEventListener('click', menuControl.setDifficulty);
 }
 
 document.addEventListener('DOMContentLoaded', init);

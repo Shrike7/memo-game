@@ -11,7 +11,80 @@ body {
     font-family: sans-serif;
 }
 
-.field {
+
+.primary-controler {
+    border-radius: 10px;
+    background-color: #ffc14f;
+    box-shadow: 3px 5px 1px #cd853f;
+    font-weight: 600;
+}
+.primary-button {
+    border: none;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+}
+.primary-button:hover {
+    box-shadow: 2px 3px 1px #cd853f;
+}
+.primary-label {
+    color: rgb(255, 255, 255);
+    padding: 0.8em 1.6em;
+}
+
+/* MENU BODY */
+.menu {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+.menu__title {
+    font-size: 2.5rem;
+    color: #ffffff;
+    font-weight: 900;
+}
+.menu__buttons {
+    margin-top: 50px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    row-gap: 30px;
+}
+.menu__button {
+    justify-self: center;
+    width: 100%;
+    padding: 1em 0;
+}
+.menu__button.active {
+    box-shadow: 2px 3px 1px #cd853f;
+    cursor: default;
+}
+.menu__button:disabled {
+    background-color: #bebbb3;
+    box-shadow: 3px 5px 1px rgb(150, 147, 145);
+}
+.menu__back {
+    margin-top: 20px;
+    width: 40%;
+}
+.menu__difficulty-settings {
+    display: none;
+}
+.menu__button--short {
+    width: 80%;
+}
+.menu__difficulty-settings>.menu__title {
+    font-size: 2rem;
+}
+/* MENU BODY END */
+
+/* GAME BODY */
+.game-body {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    display: none;
+}
+.game__field {
     display: grid;
     width: 300px;
     height: 300px;
@@ -30,47 +103,26 @@ body {
 .cell.wrong {
     background-color: #e47357;
 }
-
-.game-controls {
+.game__controls {
     margin-top: 50px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     column-gap: 30px;
-    font-weight: 600;
 }
-.primary-controler {
-    border-radius: 10px;
-    background-color: #ffc14f;
-    box-shadow: 3px 5px 1px #cd853f;
-}
-.primary-button {
-    border: none;
-    color: rgb(255, 255, 255);
-    cursor: pointer;
-}
-.primary-button:hover {
-    box-shadow: 2px 3px 1px #cd853f;
-}
-.play {
+.game__play-btn {
     padding: 1em 2em;
 }
-.menu {
+.game__menu-btn {
     display: none;
     padding: 0.8em;
 }
-.restart {
+.game__restart-btn {
     display: none;
     padding: 0.8em;
 }
-.restart>img {
+.game__restart-btn>img {
     width: 24px;
     height: 24px;
 }
-.primary-label {
-    color: rgb(255, 255, 255);
-    padding: 0.8em 1.6em;
-}
-.level {
-    display: none;
-}
+/* GAME BODY END */

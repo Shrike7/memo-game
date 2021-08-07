@@ -8,24 +8,35 @@
     <link rel="stylesheet" href="style/main.css">
 </head>
 <body>
-    <div class="menu-body">
-        <h1 class="menu__title">Memo Game</h1>
-        <div class="menu__buttons">
-            <button class="primary-controler primary-button menu__button" id="">Start game</button>
-            <button class="primary-controler primary-button menu__button" id="">Difficulty mode</button>
+    <div class="menu-body" id="menuBody">
+        <div class="menu menu__main" id="mainMenu">
+            <h1 class="menu__title">Memo Game</h1>
+            <div class="menu__buttons">
+                <button class="primary-controler primary-button menu__button" id="gameStart">Start game</button>
+                <button class="primary-controler primary-button menu__button" id="difficultySettingsBtn">Difficulty modes</button>
+                <button class="primary-controler primary-button menu__button" disabled>Settings</button>
+            </div>
+        </div>
+        <div class="menu menu__difficulty-settings" id="difficultySettings">
+            <h1 class="menu__title">Difficulty Settings</h1>
+            <div class="menu__buttons" id="difficultySettingsBtnGroup">
+                <button class="primary-controler primary-button menu__button menu__button--short" data-difficult='easy'>Easy</button>
+                <button class="primary-controler primary-button menu__button menu__button--short" data-difficult='normal'>Normal</button>
+                <button class="primary-controler primary-button menu__button menu__button--short" data-difficult='hard'>Hard</button>
+                <button class="primary-controler primary-button menu__button menu__back" id="backFromSettings">Back</button>
+            </div>
         </div>
     </div>
-    <div class="game-body">
+    <div class="game-body" id="gameBody">
         <div class="game__field" id="field">
             <!-- JS will add .cell
                 <div class="cell" data-position="0"></div>
             -->
         </div>
         <div class="game__controls">
-            <button class="primary-controler primary-button game__menu-btn" id="menu">
+            <button class="primary-controler primary-button game__menu-btn" id="backToMenu">
                 <img src="img/burger.svg" alt="refresh">
             </button>
-            <button class="primary-controler primary-button game__play-btn" id="gameStart">Start game</button>
             <div class="primary-controler primary-label game__level" id="levelLabel">1 level</div>
             <button class="primary-controler primary-button game__restart-btn" id="gameRestart">
                 <img src="img/refresh.svg" alt="refresh">

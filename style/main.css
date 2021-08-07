@@ -32,11 +32,10 @@ body {
 }
 
 /* MENU BODY */
-.menu-body {
+.menu {
     display: flex;
     align-items: center;
     flex-direction: column;
-    /* display: none; */
 }
 .menu__title {
     font-size: 2.5rem;
@@ -45,14 +44,36 @@ body {
 }
 .menu__buttons {
     margin-top: 50px;
+    width: 100%;
     display: grid;
     grid-template-columns: 1fr;
     row-gap: 30px;
-    width: 90%;
 }
 .menu__button {
+    justify-self: center;
     width: 100%;
     padding: 1em 0;
+}
+.menu__button.active {
+    box-shadow: 2px 3px 1px #cd853f;
+    cursor: default;
+}
+.menu__button:disabled {
+    background-color: #bebbb3;
+    box-shadow: 3px 5px 1px rgb(150, 147, 145);
+}
+.menu__back {
+    margin-top: 20px;
+    width: 40%;
+}
+.menu__difficulty-settings {
+    display: none;
+}
+.menu__button--short {
+    width: 80%;
+}
+.menu__difficulty-settings>.menu__title {
+    font-size: 2rem;
 }
 /* MENU BODY END */
 
@@ -103,8 +124,5 @@ body {
 .game__restart-btn>img {
     width: 24px;
     height: 24px;
-}
-.game__level {
-    display: none;
 }
 /* GAME BODY END */
